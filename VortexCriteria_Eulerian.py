@@ -1,5 +1,5 @@
 import numpy as np
-
+import scipy.linalg as la
 
 def velocity_gradient_tensor(u=0, v=0, w=0, dx=0, dy=0, dz=0):
 
@@ -62,3 +62,29 @@ def q(velocity_gradient_tensor):
     q = 0.5*(omega_norm**2 - symmetric_norm**2)
 
     return q
+
+
+def lambda2(tgradv):
+    dims = len(tgradv.shape)
+
+    if dims == 4:
+        dim1 = 2
+        dim2 = 3
+    else:
+        dim1 = 3
+        dim2 = 4
+
+    tgradvt = np.swapaxes(tgradv, dim1, dim2)
+
+    o2 = (0.5*(tgradv - tgradvt))**2
+    s2 = (0.5*(tgradv + tgradvt))**2
+
+    A = s2 + o2
+
+    L = la.eigvals(a)
+
+
+
+    # l2 = 0.5*(omega_norm**2 - symmetric_norm**2)
+
+    return l2
