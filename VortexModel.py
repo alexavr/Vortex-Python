@@ -10,13 +10,8 @@ def pressure(X, Y, variance=0.3, center=[0, 0], alpha=1000.):
     p = 101500. - alpha*st.multivariate_normal.pdf(pos, mean=center, cov=np.eye(2) * variance)
     return p
 
-
-def VortexModel_Simple(pressure2d, dxy, flow='flat', umax=5):
-
-    f = 10**-4 # midlats
-    rho = 1.   # density is constant
-
-    N = pressure2d.shape[0]
+def background_flow(u, v, flow='flat', umax=5):
+    N = u.shape[0]
 
     # Disturbing the vortex with
     if flow == 'flat':
@@ -27,10 +22,21 @@ def VortexModel_Simple(pressure2d, dxy, flow='flat', umax=5):
         print("Cannot recognise flow type!")
         return 0, 0
 
-    dpdx = np.gradient(pressure2d, dxy, axis=1) # 1 is row in python
-    dpdy = np.gradient(pressure2d, dxy, axis=0) # 0 is column in python
+    u = u + ubg[:, None]
+    v = v
 
-    u = -1./(f*rho)*dpdy + ubg[:, None]
+    return u, v
+
+
+def VortexModel_Simple(pressure2d, dxy):
+
+    f = 10**-4  # midlats
+    rho = 1.    # density is constant
+
+    dpdx = np.gradient(pressure2d, dxy, axis=1)  # 1 is row in python
+    dpdy = np.gradient(pressure2d, dxy, axis=0)  # 0 is column in python
+
+    u = -1./(f*rho)*dpdy
     v = +1./(f*rho)*dpdx
 
     return u, v
