@@ -2,6 +2,8 @@
 # Project specifics
 VORTEX.pptx
 Vortex-FTLE_richardagalvez.ipynb
+_out/
+_vortex_animation.py
 
 ################################################
 # Python specific
