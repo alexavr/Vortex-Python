@@ -53,11 +53,11 @@ def q(velocity_gradient_tensor):
 
     tgradvt = np.swapaxes(velocity_gradient_tensor, dim1, dim2)
 
-    omega = 0.5*(velocity_gradient_tensor - tgradvt)
-    symmetric = 0.5*(velocity_gradient_tensor + tgradvt)
+    omg = 0.5*(velocity_gradient_tensor - tgradvt)
+    sym = 0.5*(velocity_gradient_tensor + tgradvt)
 
-    omega_norm = np.linalg.norm(omega, axis=(dim1, dim2))
-    symmetric_norm = np.linalg.norm(symmetric, axis=(dim1, dim2))
+    sym_norm = np.linalg.norm(sym, axis=(dim1, dim2))
+    omg_norm = np.linalg.norm(omg, axis=(dim1, dim2))
 
     q = 0.5*(omega_norm**2 - symmetric_norm**2)
 

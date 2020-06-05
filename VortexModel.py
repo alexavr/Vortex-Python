@@ -5,12 +5,17 @@ import numpy as np
 import scipy.stats as st
 
 
-def pressure(X, Y, variance=0.3, center=[0, 0], alpha=1000.):
+def vsvm_pressure(X, Y, variance=0.3, center=[0, 0], alpha=1000.):
+    """Creates the pressure filed as an boundary condition for VSVM
+    """
     pos = np.dstack((X, Y))
     p = 101500. - alpha*st.multivariate_normal.pdf(pos, mean=center, cov=np.eye(2) * variance)
     return p
 
-def background_flow(u, v, flow='flat', umax=5):
+def vsvm_background_flow(u, v, flow='flat', umax=5):
+    """Adds disturbance into existed 2D velocity field
+    """
+
     N = u.shape[0]
 
     # Disturbing the vortex with
@@ -28,7 +33,11 @@ def background_flow(u, v, flow='flat', umax=5):
     return u, v
 
 
-def VortexModel_Simple(pressure2d, dxy):
+def vsvm(pressure2d, dxy):
+    """The Very Simple Vortex Model
+        Uses pressure fiels as initial 
+        and computes velocity according to goesprophic balance 
+    """
 
     f = 10**-4  # midlats
     rho = 1.    # density is constant
